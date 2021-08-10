@@ -1,7 +1,6 @@
 import bpy
 from math import *
 import math
-import bpy, bmesh
 
 # ------------------ This portion of the script generates the actual geometry from imported or default data ------------------ #
 def createMeshFromData(name, origin, verts, edges, faces):
@@ -51,22 +50,16 @@ for i in range( 0, len(verts1)-1):
     edges1.append( [i, i+1] )
 
 # Generate the actual Blender geometry:(name, origin, verts, edges, faces)
+createMeshFromData( 'Geometry', [0, 0, 0], verts1, edges1, [] ) # initial side tooth geometry
+
 
 # ----------------------------------------------------------------------------------------------------------------- #
 
 # ---- Create Gear Profile ---- #
 
 # generate gear tooth
-teeth = 40
-
-createMeshFromData( 'Geometry_init', [0, 0, 0], verts1, edges1, [] ) # initial side tooth geometry
-# need to remove line connecting ends
-
-bpy.ops.object.select_all(action='DESELECT')
 createMeshFromData( 'Geometry', [0, 0, 0], verts1, edges1, [] )
-bpy.ops.transform.rotate(value=math.pi, orient_axis='X')
-bpy.ops.transform.rotate(value=2*math.pi/teeth, orient_axis='Z')
-bpy.ops.object.select_all(action='SELECT')
+bpy.ops.transform.rotate(value=math.pi, orient_axis='Z')
 
 # rotate gear tooth to it's position # this may not be used as is
 #teeth = 40
@@ -76,6 +69,3 @@ bpy.ops.object.select_all(action='SELECT')
 #    createMeshFromData( 'Geometry', [0, 0, 0], verts1, edges1, [] )
 #    bpy.ops.transform.rotate(value=z_rotate_init, orient_axis='Z')
 #    z_rotate_init += zRotation
-
-
-print('script running')
