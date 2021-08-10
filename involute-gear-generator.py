@@ -50,38 +50,31 @@ edges1 = [[len(verts1) - 1, 0]]
 for i in range( 0, len(verts1)-1):
     edges1.append( [i, i+1] )
 
-# Generate the actual Blender geometry:(name, origin, verts, edges, faces)
-
 # ----------------------------------------------------------------------------------------------------------------- #
 
 # ---- Create Gear Profile ---- #
 
 # generate gear tooth
 teeth = 40
+rotate_tooth = (2*math.pi) / (teeth)
 
-createMeshFromData( 'Geometry_init', [0, 0, 0], verts1, edges1, [] ) # initial side tooth geometry
-bpy.ops.transform.rotate(value=math.pi, orient_axis='X')
-bpy.ops.transform.rotate(value=2*math.pi/teeth, orient_axis='Z')
-#bpy.ops.object.select_all(action='DESELECT')
-
-##context.view_layer.objects.active = context.scene.objects.get(target)
-#bpy.ops.object.mode_set(mode='EDIT')
-##bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1})
-
-# need to remove line connecting ends
-
-#bpy.ops.object.select_all(action='DESELECT')
-createMeshFromData( 'Geometry', [0, 0, 0], verts1, edges1, [] )
-
-#bpy.ops.objects.join()
-for obj in bpy.context.selected_objects:
-    obj.name = "Cyl"
-    obj.data.name = "Cyl"
-    bpy.ops.object.select_by_type(extend=False, type='MESH')
-    bpy.ops.object.join()
+for i in range(teeth):
+    createMeshFromData( 'Geometry_init' + str(i), [0, 0, 0], verts1, edges1, [] ) # initial side tooth geometry
+    bpy.ops.transform.rotate(value=math.pi, orient_axis='X')
+    bpy.ops.transform.rotate(value=2*math.pi/(teeth), orient_axis='Z')
+    createMeshFromData( 'Geometry' + str(i), [0, 0, 0], verts1, edges1, [] )
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.transform.rotate(value=rotate_tooth, orient_axis='Z')
     bpy.ops.object.select_all(action='DESELECT')
-#    obj.name = "GEO_sphere"
-#    obj.data.name = "GEO_sphere"
+
+# select and join both sides of teeth into single object
+#for obj in bpy.context.selected_objects:
+#    obj.name = "Cyl"
+#    obj.data.name = "Cyl"
+#    bpy.ops.object.select_by_type(extend=False, type='MESH')
+#    bpy.ops.object.select_all(action='SELECT')
+#    bpy.ops.object.join()
+
 
 #bpy.ops.transform.rotate(value=math.pi, orient_axis='X')
 #bpy.ops.transform.rotate(value=2*math.pi/teeth, orient_axis='Z')
