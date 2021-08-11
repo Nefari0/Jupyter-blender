@@ -26,13 +26,16 @@ C = 8.47799 # Sets x origin.
 # verts1 contains all xyz coordinates
 # default - based off 20 tooth gear
 
-z1 = 20 # number of teeth 
+#z1 = 20 # number of teeth # default
+z1 = 20
 ref_dia1 = 20 # reference diameter
 ref_radius1 = ref_dia1 / 2 # reference radius
 base_dia1 = 18.7939
 base_radius_1 = base_dia1 / 2
+
 z1_thickness_deg = 10.7079 # tooth thickness angle ( degrees ) at base
-z1_thickness_rad = math.radians(z1_thickness_deg)
+z1_thickness_rad = math.radians(z1_thickness_deg) # converted to radians from degrees
+
 tip_diameter_1 = 22
 pitch1 = (math.pi*ref_dia1) / z1 # pitch
 module1 = ref_dia1 / z1 # module
@@ -77,6 +80,15 @@ for i in range(z1):
     bpy.ops.object.select_all(action='DESELECT')
 #    rotation =+ rotate_tooth
 #    print('rotate_tooth',rotate_tooth)
+
+# link teeth at base
+#cursor_local = [base_dia1*math.cos(z1_thickness_rad),base_dia1*math.sin(z1_thickness_rad),'z']
+cursor_local = [base_dia1*math.cos((2*math.pi / z1)/2),base_dia1*math.sin((2*math.pi / z1)/2)/2,'z']
+rads = math.radians(360 % z1_thickness_deg)
+cursor_x = base_dia1*math.cos((2*math.pi / z1) - (rads/2))
+cursor_y = base_dia1*math.sin((2*math.pi / z1) - (rads/2))
+bpy.context.scene.cursor.location[0] = cursor_x
+bpy.context.scene.cursor.location[1] = cursor_y
     
 
 # select and join both sides of teeth into single object
