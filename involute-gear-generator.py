@@ -55,17 +55,28 @@ for i in range( 0, len(verts1)-1):
 # ---- Create Gear Profile ---- #
 
 # generate gear tooth
-teeth = 40
-rotate_tooth = (2*math.pi) / (teeth)
+teeth = 40 # default
+#teeth = 1
+reference_diameter = 40
+base_diameter = 37.5877
+tip_diameter = 42
+tooth_thickness = 6.2079
+rotate_tooth = ((2*math.pi) / (reference_diameter)) /2
+tooth_position = tip_diameter / teeth
+pitch = tip_diameter / teeth
+rotation = ((2*math.pi) / (reference_diameter))
 
 for i in range(teeth):
     createMeshFromData( 'Geometry_init' + str(i), [0, 0, 0], verts1, edges1, [] ) # initial side tooth geometry
     bpy.ops.transform.rotate(value=math.pi, orient_axis='X')
-    bpy.ops.transform.rotate(value=2*math.pi/(teeth), orient_axis='Z')
+    bpy.ops.transform.rotate(value=rotate_tooth, orient_axis='Z')
     createMeshFromData( 'Geometry' + str(i), [0, 0, 0], verts1, edges1, [] )
     bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.transform.rotate(value=rotate_tooth, orient_axis='Z')
+    bpy.ops.transform.rotate(value=rotation, orient_axis='Z')
     bpy.ops.object.select_all(action='DESELECT')
+#    rotation =+ rotate_tooth
+#    print('rotate_tooth',rotate_tooth)
+    
 
 # select and join both sides of teeth into single object
 #for obj in bpy.context.selected_objects:
