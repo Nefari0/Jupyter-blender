@@ -24,9 +24,20 @@ C = 8.47799 # Sets x origin.
 
 # ---- default data ---- # comment this portion out if using imported data
 # verts1 contains all xyz coordinates
-# default - based off 40 tooth gear
+# default - based off 20 tooth gear
 
-verts1 = [[18.7939, 0.0, 0], [18.8227186176212, 0.0010648578906716144, 0], [18.90890914624056, 0.008511021290507648, 0], [19.05167697002892, 0.02868062520523285, 0], [19.249702246453555, 0.0678376439337713, 0], [19.50114666167366, 0.1321292607273673, 0], [19.80366284741993, 0.22754777540109491, 0], [20.154406418876736, 0.35989322578595173, 0], [20.550050581793805, 0.5347368959872805, 0], [20.986803245966822, 0.7573858807833217, 0]]
+z1 = 20 # number of teeth 
+ref_dia1 = 20 # reference diameter
+ref_radius1 = ref_dia1 / 2 # reference radius
+base_dia1 = 18.7939
+base_radius_1 = base_dia1 / 2
+z1_thickness_deg = 10.7079 # tooth thickness angle ( degrees ) at base
+z1_thickness_rad = math.radians(z1_thickness_deg)
+tip_diameter_1 = 22
+pitch1 = (math.pi*ref_dia1) / z1 # pitch
+module1 = ref_dia1 / z1 # module
+
+verts1 = [[18.7939, 0.0, 0.0], [18.8227186176212, 0.0010648578906716144, 0.0], [18.90890914624056, 0.008511021290507648, 0.0], [19.05167697002892, 0.02868062520523285, 0.0], [19.249702246453555, 0.0678376439337713, 0.0], [19.50114666167366, 0.1321292607273673, 0.0], [19.80366284741993, 0.22754777540109491, 0.0], [20.154406418876736, 0.35989322578595173, 0.0], [20.550050581793805, 0.5347368959872805, 0.0]]
 # ---------------------- #
 
 # ---- imported data ---- # comment this portion out if using default / internal data
@@ -55,24 +66,14 @@ for i in range( 0, len(verts1)-1):
 # ---- Create Gear Profile ---- #
 
 # generate gear tooth
-teeth = 40 # default
-#teeth = 1
-reference_diameter = 40
-base_diameter = 37.5877
-tip_diameter = 42
-tooth_thickness = 6.2079
-rotate_tooth = ((2*math.pi) / (reference_diameter)) /2
-tooth_position = tip_diameter / teeth
-pitch = tip_diameter / teeth
-rotation = ((2*math.pi) / (reference_diameter))
 
-for i in range(teeth):
+for i in range(z1):
     createMeshFromData( 'Geometry_init' + str(i), [0, 0, 0], verts1, edges1, [] ) # initial side tooth geometry
     bpy.ops.transform.rotate(value=math.pi, orient_axis='X')
-    bpy.ops.transform.rotate(value=rotate_tooth, orient_axis='Z')
+    bpy.ops.transform.rotate(value=z1_thickness_rad, orient_axis='Z')
     createMeshFromData( 'Geometry' + str(i), [0, 0, 0], verts1, edges1, [] )
     bpy.ops.object.select_all(action='SELECT')
-    bpy.ops.transform.rotate(value=rotation, orient_axis='Z')
+    bpy.ops.transform.rotate(value=2*math.pi / z1, orient_axis='Z')
     bpy.ops.object.select_all(action='DESELECT')
 #    rotation =+ rotate_tooth
 #    print('rotate_tooth',rotate_tooth)
