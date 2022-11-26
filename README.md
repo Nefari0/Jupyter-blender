@@ -3,7 +3,7 @@ How to use this code.
 
 Open 'blender-geometry-data-convertion.ipynb' in Jupyter Notebook
 
-You must run each every code cell in it's order for this code to work. They are listed as follows:
+You must run each and every code cell in it's order for this code to work. They are listed as follows:
 
 “Import Libraries”
 
